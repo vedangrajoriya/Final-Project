@@ -35,7 +35,7 @@ docker compose up -d
 ```
 
 ### 4. Verify Services
-- **Frontend:** Open `http://localhost:3000` in your browser.
+- **Frontend:** Open `http://localhost:80` (or your EC2 IP) in your browser.
 - **Backend API Docs:** Open `http://localhost:8000/docs` in your browser.
 
 ---
