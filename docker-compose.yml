@@ -1,5 +1,6 @@
 services:
   backend:
+    image: ${BACKEND_IMAGE:-ghcr.io/vedangrajoriya/final-project-backend:latest}
     build:
       context: .
       dockerfile: deployment/backend.Dockerfile
@@ -26,6 +27,7 @@ services:
       start_period: 10s
 
   frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/vedangrajoriya/final-project-frontend:latest}
     build:
       context: .
       dockerfile: deployment/frontend.Dockerfile

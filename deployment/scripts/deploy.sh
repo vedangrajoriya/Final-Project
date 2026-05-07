@@ -24,8 +24,8 @@ export FRONTEND_IMAGE="$IMAGE_PREFIX-frontend:latest"
 
 # 3. Restart services with zero-downtime recreation
 echo "[2/4] Restarting containers..."
-# Use --build false to ensure we don't accidentally compile on the server
-docker compose up -d --no-deps --build
+# Use --no-build to ensure we don't accidentally compile on the server
+docker compose up -d --no-deps --no-build
 
 # 4. Cleanup old dangling images to save EC2 disk space
 echo "[3/4] Cleaning up old Docker images..."
