@@ -35,6 +35,10 @@ jobs:
             # Export environment variables for Docker Compose
             export GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
             export DEAPI_API_KEY="${{ secrets.DEAPI_API_KEY }}"
+            export DEAPI_BASE_URL="${{ secrets.DEAPI_BASE_URL }}"
+            export DEAPI_IMAGE_MODEL="${{ secrets.DEAPI_IMAGE_MODEL }}"
+            export GROQ_MODEL="${{ secrets.GROQ_MODEL }}"
+            export LOG_LEVEL="${{ secrets.LOG_LEVEL }}"
             export VITE_API_URL="${{ secrets.PROD_API_URL }}"
             
             # Ensure script is executable

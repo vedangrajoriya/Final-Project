@@ -34,6 +34,9 @@ COPY ../backend/ /app/
 # Change ownership of the app directory to the non-root user
 RUN chown -R appuser:appgroup /app
 
+# Set HOME directory to /app since appuser owns it
+ENV HOME=/app
+
 # Switch to the non-root user
 USER appuser
 
