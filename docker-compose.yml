@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: deployment/backend.Dockerfile
+    container_name: ai_hospitality_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # These will be read from the .env file in the same directory as docker-compose.yml
+      # OR injected via CI/CD pipelines/AWS Parameter Store
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - DEAPI_API_KEY=${DEAPI_API_KEY}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - DEAPI_IMAGE_MODEL=${DEAPI_IMAGE_MODEL:-flux-1.1-schnell}
+      - DEAPI_BASE_URL=${DEAPI_BASE_URL:-https://api.deapi.ai}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    networks:
+      - ai-platform-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deployment/frontend.Dockerfile
+      args:
+        # Pass the backend URL to Vite during the build stage
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+    container_name: ai_hospitality_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - ai-platform-net
+    depends_on:
+      - backend
+
+networks:
+  ai-platform-net:
+    driver: bridge

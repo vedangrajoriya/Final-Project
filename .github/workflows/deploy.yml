@@ -1,0 +1,43 @@
+name: Deploy to Production (AWS EC2)
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Backend CI Pipeline", "Frontend CI Pipeline"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Navigate to project directory (assuming it's cloned at /home/ubuntu/app)
+            cd /home/ubuntu/app
+            
+            # Pull latest changes from git
+            git pull origin main
+            
+            # Login to GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Export environment variables for Docker Compose
+            export GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}"
+            export DEAPI_API_KEY="${{ secrets.DEAPI_API_KEY }}"
+            export VITE_API_URL="${{ secrets.PROD_API_URL }}"
+            
+            # Ensure script is executable
+            chmod +x ./deployment/scripts/deploy.sh
+            
+            # Run the deployment script
+            ./deployment/scripts/deploy.sh ghcr.io/${{ github.repository }}
