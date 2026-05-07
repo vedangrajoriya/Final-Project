@@ -40,4 +40,4 @@ jobs:
             chmod +x ./deployment/scripts/deploy.sh
             
             # Run the deployment script
-            ./deployment/scripts/deploy.sh ghcr.io/${{ github.repository }}
+            ./deployment/scripts/deploy.sh ghcr.io/${{ github.repository_owner }}/final-project
