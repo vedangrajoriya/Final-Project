@@ -6,6 +6,8 @@ on:
     paths:
       - 'backend/**'
       - 'deployment/backend.Dockerfile'
+      - '.github/workflows/**'
+      - 'deployment/scripts/**'
   pull_request:
     branches: [ "main" ]
     paths:

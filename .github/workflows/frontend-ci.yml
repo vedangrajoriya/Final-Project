@@ -7,6 +7,8 @@ on:
       - 'frontend/**'
       - 'deployment/frontend.Dockerfile'
       - 'deployment/nginx.conf'
+      - '.github/workflows/**'
+      - 'deployment/scripts/**'
   pull_request:
     branches: [ "main" ]
     paths:
