@@ -42,7 +42,7 @@ else
     exit 1
 fi
 
-if curl -s -f http://localhost:3000 > /dev/null; then
+if curl -s -f http://localhost:80 > /dev/null; then
     echo "✅ Frontend is serving traffic!"
 else
     echo "❌ Frontend health check failed!"
